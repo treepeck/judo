@@ -14,11 +14,10 @@ services:
       - ./config/definitions.json:/etc/rabbitmq/definitions.json:ro
       - rabbitmq_data:/var/lib/rabbitmq
     # This allows to start the gatekeeper service only when rabbitmq is ready
-    # to accepts new AMQP connections.  Otherwise gatekeeper will crush after 
+    # to accepts new AMQP connections.  Otherwise gatekeeper will crush after
     # first unsuccessfull connection try.
     healthcheck:
       test: ["CMD", "rabbitmqctl", "status"]
-      interval: 5s
       retries: 10
       timeout: 2s
 
@@ -32,6 +31,13 @@ services:
     volumes:
       # Make db data persistent.
       - mysql_data:/var/lib/mysql
+    # This allows to start the justchess service only when mysql is ready
+    # to accepts new connections.  Otherwise justchess will crush after 
+    # first unsuccessfull connection try.
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
+      retries: 10
+      timeout: 5s
 
   gatekeeper:
     build:
@@ -54,8 +60,10 @@ services:
     env_file:
       - ./config/justchess.env
     depends_on:
-      - mysql
-      - gatekeeper
+      mysql:
+        condition: service_healthy
+      gatekeeper:
+        condition: service_started
     ports:
       - "3502:3502"
 
@@ -71,8 +79,9 @@ services:
     ports:
       - "3000:3000" # Default NextJS port.
     volumes:
-      - ./repo/frontend:/app # Mount source code to host OS.
+      - ./repo/frontend:/app # Mount source code from host OS.
       - /app/node_modules    # Do not copy node_modules from container.
+      - /app/.next
     command: npm run dev
 
 volumes:
