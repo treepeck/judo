@@ -1,0 +1,23 @@
+{
+	"users": [
+		{
+			"name": "admin",
+			"password": "admin",
+			"tags": "administrator"
+		}
+	],
+	"vhosts": [
+		{
+			"name": "/justchess-vhost"
+		}
+	],
+	"permissions": [
+		{
+			"user": "admin",
+			"vhost": "/justchess-vhost",
+			"configure": "*",
+			"write": "*",
+			"read": "*"
+		}
+	]
+}

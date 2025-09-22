@@ -1,0 +1,80 @@
+# See README.md for introduction.
+
+services:
+  rabbitmq:
+    # Stable version with management UI.
+    image: rabbitmq:4.1.4-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"   # Default RabbitMQ port.
+      - "15672:15672" # RabbitMQ management web UI.
+    env_file:
+      - ./config/rabbitmq.env
+    volumes:
+      - ./config/definitions.json:/etc/rabbitmq/definitions.json:ro
+      - rabbitmq_data:/var/lib/rabbitmq
+    # This allows to start the gatekeeper service only when rabbitmq is ready
+    # to accepts new AMQP connections.  Otherwise gatekeeper will crush after 
+    # first unsuccessfull connection try.
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 5s
+      retries: 10
+      timeout: 2s
+
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    ports:
+      - "3306:3306" # Default MySQL port.
+    env_file:
+      - ./config/mysql.env
+    volumes:
+      # Make db data persistent.
+      - mysql_data:/var/lib/mysql
+
+  gatekeeper:
+    build:
+      context: .
+      dockerfile: ./docker/gatekeeper.Dockerfile
+    container_name: gatekeeper
+    env_file:
+      - ./config/gatekeeper.env
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    ports:
+      - "3503:3503"
+
+  justchess:
+    build:
+      context: .
+      dockerfile: ./docker/justchess.Dockerfile
+    container_name: justchess
+    env_file:
+      - ./config/justchess.env
+    depends_on:
+      - mysql
+      - gatekeeper
+    ports:
+      - "3502:3502"
+
+  frontend:
+    build:
+      context: .
+      dockerfile: ./docker/frontend.Dockerfile
+    container_name: frontend
+    env_file:
+      - ./config/frontend.env
+    depends_on:
+      - justchess
+    ports:
+      - "3000:3000" # Default NextJS port.
+    volumes:
+      - ./repo/frontend:/app # Mount source code to host OS.
+      - /app/node_modules    # Do not copy node_modules from container.
+    command: npm run dev
+
+volumes:
+  rabbitmq_data:
+  mysql_data:
