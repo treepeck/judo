@@ -14,7 +14,7 @@ REPOS=(
 	"https://github.com/treepeck/justchess-frontend frontend"
 )
 
-if [ -d "/repo" ]; then 
+if [ ! -d "./repo" ]; then
 	mkdir repo
 fi
 
@@ -32,7 +32,7 @@ for repo in "${REPOS[@]}"; do
 			git pull origin main
 		)
 	else
-		mkdir ./repo/${split[1]}
+		mkdir repo/${split[1]}
 		git clone ${split[0]} ./repo/${split[1]}
 	fi
 done
