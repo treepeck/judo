@@ -8,9 +8,8 @@ services:
     ports:
       - "5672:5672"   # Default RabbitMQ port.
       - "15672:15672" # RabbitMQ management web UI.
-    env_file:
-      - ./config/rabbitmq.env
     volumes:
+      - ./config/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
       - ./config/definitions.json:/etc/rabbitmq/definitions.json:ro
       - rabbitmq_data:/var/lib/rabbitmq
     # This allows to start the gatekeeper service only when rabbitmq is ready
@@ -20,6 +19,10 @@ services:
       test: ["CMD", "rabbitmqctl", "status"]
       retries: 10
       timeout: 2s
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   mysql:
     image: mysql:latest
@@ -38,25 +41,34 @@ services:
       test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
       retries: 10
       timeout: 5s
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   gatekeeper:
     build:
       context: .
       dockerfile: ./docker/gatekeeper.Dockerfile
-    container_name: gatekeeper
+    container_name: gatekeeper-debug
     env_file:
       - ./config/gatekeeper.env
     depends_on:
       rabbitmq:
         condition: service_healthy
     ports:
-      - "3503:3503"
+      - "3503:3503" # Gatekeeper port.
+      - "2346:2346" # Debugger port.
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   justchess:
     build:
       context: .
       dockerfile: ./docker/justchess.Dockerfile
-    container_name: justchess
+    container_name: justchess-debug
     env_file:
       - ./config/justchess.env
     depends_on:
@@ -65,7 +77,12 @@ services:
       gatekeeper:
         condition: service_started
     ports:
-      - "3502:3502"
+      - "3502:3502" # Justchess port.
+      - "2345:2345" # Debugger port.
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   frontend:
     build:
@@ -83,6 +100,10 @@ services:
       - /app/node_modules    # Do not copy node_modules from container.
       - /app/.next
     command: npm run dev
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 volumes:
   rabbitmq_data:
