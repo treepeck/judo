@@ -42,19 +42,19 @@ See `docker-compose.yaml` for details about the network ports used by these serv
 `docker-compose.yaml` expects the following configuration files to be located in<br/>
 the `config` folder:
 
-- `definitions.json` - defines the RabbitMQ user credentials and the custom<br/>
-   virtual host name.
-- `rabbitmq.env` - tells the RabbitMQ Docker image to load and use data from `definitions.json`.
+- `definitions.json` - defines the RabbitMQ user credentials, custom virtual<br/>
+  host, exchange, queues, and bindings.
+- `rabbitmq.conf` - tells the RabbitMQ Docker image to load and use data from `definitions.json`.
 - `mysql.env` - defines the MySQL user credentials and database name.
 - `gatekeeper.env` - defines the AMQP URL for connecting to RabbitMQ and the URL<br/>
   to which the Gatekeeper sends authorization verification requests.
 - `justchess.env` - defines the AMQP URL for connecting to RabbitMQ and the MySQL<br/>
   URL for connecting to the database.
-- `frontend` - defines the NODE_ENV.
+- `frontend.env` - defines the NODE_ENV and disabled NextJS telemetry.
 
 ## Run services
 
-To manually run all services, execute this command in the `judo` folder:  
+To manually run all services, execute this command in the `judo` folder:
 
 ```
 docker compose up -d
@@ -62,6 +62,9 @@ docker compose up -d
 
 You might need to prefix the previous command with sudo if you haven’t configured<br/>
 the system permissions for the Docker.
+
+To debug the backend source code, switch to the `debug` branch which runs<br/>
+the [Delve](https://github.com/go-delve/delve) debugger in Docker containers.
 
 ## License
 
