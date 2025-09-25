@@ -8,9 +8,8 @@ services:
     ports:
       - "5672:5672"   # Default RabbitMQ port.
       - "15672:15672" # RabbitMQ management web UI.
-    env_file:
-      - ./config/rabbitmq.env
     volumes:
+      - ./config/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
       - ./config/definitions.json:/etc/rabbitmq/definitions.json:ro
       - rabbitmq_data:/var/lib/rabbitmq
     # This allows to start the gatekeeper service only when rabbitmq is ready
@@ -20,6 +19,10 @@ services:
       test: ["CMD", "rabbitmqctl", "status"]
       retries: 10
       timeout: 2s
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   mysql:
     image: mysql:latest
@@ -38,6 +41,10 @@ services:
       test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
       retries: 10
       timeout: 5s
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   gatekeeper:
     build:
@@ -51,6 +58,10 @@ services:
         condition: service_healthy
     ports:
       - "3503:3503"
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   justchess:
     build:
@@ -66,6 +77,10 @@ services:
         condition: service_started
     ports:
       - "3502:3502"
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   frontend:
     build:
