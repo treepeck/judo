@@ -89,15 +89,13 @@ services:
     container_name: frontend
     env_file:
       - ./config/frontend.env
-    depends_on:
-      - justchess
     ports:
       - "3000:3000" # Default NextJS port.
     volumes:
       - ./repo/frontend:/app # Mount source code from host OS.
       - /app/node_modules    # Do not copy node_modules from container.
       - /app/.next
-    command: npm run dev
+    command: pnpm dev
 
 volumes:
   rabbitmq_data:
