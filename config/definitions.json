@@ -1,23 +1,70 @@
 {
+	"vhosts": [
+		{
+			"name": "justchess-vhost"
+		}
+	],
 	"users": [
 		{
 			"name": "admin",
 			"password": "admin",
-			"tags": "administrator"
-		}
-	],
-	"vhosts": [
-		{
-			"name": "/justchess-vhost"
+			"tags": ["administrator"]
 		}
 	],
 	"permissions": [
 		{
 			"user": "admin",
-			"vhost": "/justchess-vhost",
-			"configure": "*",
-			"write": "*",
-			"read": "*"
+			"vhost": "justchess-vhost",
+			"configure": ".*",
+			"write": ".*",
+			"read": ".*"
+		}
+	],
+	"queues": [
+		{
+			"name": "core",
+			"vhost": "justchess-vhost",
+			"durable": true,
+			"auto_delete": false,
+			"arguments": {
+
+			}
+		},
+		{
+			"name": "gate",
+			"vhost": "justchess-vhost",
+			"durable": true,
+			"auto_delete": false,
+			"arguments": {}
+		}
+	],
+	"exchanges": [
+		{
+			"name": "hub",
+			"vhost": "justchess-vhost",
+			"type": "topic",
+			"durable": true,
+			"auto_delete": false,
+			"internal": false,
+			"arguments": {}
+		}
+	],
+	"bindings": [
+		{
+			"source": "hub",
+			"vhost": "justchess-vhost",
+			"destination": "core",
+			"destination_type": "queue",
+			"routing_key": "core",
+			"arguments": {}
+		},
+		{
+			"source": "hub",
+			"vhost": "justchess-vhost",
+			"destination": "gate",
+			"destination_type": "queue",
+			"routing_key": "gate",
+			"arguments": {}
 		}
 	]
 }

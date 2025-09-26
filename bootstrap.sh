@@ -28,8 +28,7 @@ for repo in "${REPOS[@]}"; do
 	if [ -d "$repopath" ]; then
 		(
 			cd ./repo/${split[1]}
-			git fetch origin
-			git pull origin main
+			git pull origin dev
 		)
 	else
 		mkdir repo/${split[1]}
