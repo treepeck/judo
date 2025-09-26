@@ -1,6 +1,5 @@
-FROM node:24-alpine
-WORKDIR /app
+FROM node:lts-alpine
 
-# Install dependencies.
-COPY repo/frontend/package*.json .
-RUN npm install
+WORKDIR /app
+COPY ./repo/frontend/package.json ./repo/frontend/pnpm-lock.yaml ./
+RUN corepack enable pnpm && pnpm i --frozen-lockfile
