@@ -25,22 +25,24 @@ services:
         max-file: "3"
 
   mysql:
-    image: mysql:latest
+    build:
+      context: .
+      dockerfile: ./docker/mysql.Dockerfile
     container_name: mysql
     ports:
       - "3306:3306" # Default MySQL port.
     env_file:
       - ./config/mysql.env
-    volumes:
-      # Make db data persistent.
-      - mysql_data:/var/lib/mysql
     # This allows to start the justchess service only when mysql is ready
-    # to accepts new connections.  Otherwise justchess will crush after 
+    # to accepts new connections.  Otherwise justchess will crush after
     # first unsuccessfull connection try.
     healthcheck:
       test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
       retries: 10
       timeout: 5s
+    volumes:
+      # Make db data persistent.
+      - mysql_data:/var/lib/mysql
     logging:
       options:
         max-size: "10m"
