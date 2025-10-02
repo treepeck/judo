@@ -10,15 +10,15 @@ First install the Docker Engine or Desktop (see https://docs.docker.com/engine/i
 Secondly make sure that [docker compose](https://docs.docker.com/reference/cli/docker/compose/)
 CLI tool is installed.
 
-Once everyting is ready, clone this repository:
+Once everything is ready, clone this repository:
 
 ```
 git clone https://github.com/treepeck/judo
 cd judo
 ```
 
-Finally, execute bootstrap.sh (works via WSL on Windows) script that will download<br/>
-source code from GitHub repos and run docker compose up -d --build.
+Finally, execute `./judo.sh download` (works via WSL on Windows) script that<br/>
+will download the source code from GitHub repos and start the services.
 
 Changes to Go files require rebuilding the images, while changes to frontend<br/>
 files are displayed automatically.
@@ -31,6 +31,8 @@ Justchess project contains the following services:
   The image provides a Web UI management tool, available on the port 15672.
 - `mysql` - a database that stores player's credentials, active sessions and <br/>
   completed games.
+- `testdb` - a disposable database that provides an isolated layer for running<br/>
+  tests.  Available only on `debug` branch.
 - `gatekeeper` - a WebSocker server that accepts and forwards events to the Justchess.
 - `justchess` - handles HTTP requests, Gatekeeper's events, and manages game states.
 - `frontend` - web ui.
@@ -46,6 +48,8 @@ the `config` folder:
   host, exchange, queues, and bindings.
 - `rabbitmq.conf` - tells the RabbitMQ Docker image to load and use data from `definitions.json`.
 - `mysql.env` - defines the MySQL user credentials and database name.
+- `testdb.env` - defines the MySQL user credentials and database name for testdb.<br/>
+  Available only on `debug` branch.
 - `gatekeeper.env` - defines the AMQP URL for connecting to RabbitMQ and the URL<br/>
   to which the Gatekeeper sends authorization verification requests.
 - `justchess.env` - defines the AMQP URL for connecting to RabbitMQ and the MySQL<br/>
@@ -54,17 +58,32 @@ the `config` folder:
 
 ## Run services
 
-To manually run all services, execute this command in the `judo` folder:
+To run all services, execute this command in the `judo` folder:
 
 ```
-docker compose up -d
+./judo.sh start
 ```
 
-You might need to prefix the previous command with sudo if you haven’t configured<br/>
+You might need to prefix this command with sudo if you haven’t configured<br/>
 the system permissions for the Docker.
 
-To debug the backend source code, switch to the `debug` branch which runs<br/>
-the [Delve](https://github.com/go-delve/delve) debugger in Docker containers.
+## Debug and run tests
+
+Switch to the `debug` branch:
+
+```
+git checkout debug
+```
+
+Now the backend services will be running under the [Delve](https://github.com/go-delve/delve) debugger in Docker containers.<br/>
+
+To run tests, start services and execute this command in the `judo` folder:
+
+```
+./judo.sh test
+```
+
+This will create a disposable MySQL database, run all tests and cleanup the resources.
 
 ## License
 
