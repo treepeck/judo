@@ -1,0 +1,30 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "justchess",
+			"type": "go",
+			"request": "attach",
+			"mode": "remote",
+			"port": 2345,
+			"host": "127.0.0.1"
+		},
+		{
+			"name": "gatekeeper",
+			"type": "go",
+			"request": "attach",
+			"mode": "remote",
+			"port": 2346,
+			"host": "127.0.0.1"
+		},
+	],
+	"compounds": [
+		{
+			"name": "Launch all",
+			"configurations": [
+				"gatekeeper",
+				"justchess"
+			]
+		}
+	]
+}

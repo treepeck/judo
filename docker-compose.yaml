@@ -59,10 +59,16 @@ services:
         condition: service_healthy
     ports:
       - "3503:3503" # Gatekeeper port.
+      - "2346:2346" # Delve debugger port.
+    volumes:
+      - ./repo/gatekeeper:/app/src # Mount source code from host OS.
+      - ./gatekeeper-entrypoint.sh:/app/gatekeeper-entrypoint.sh:ro
     logging:
       options:
         max-size: "10m"
         max-file: "3"
+    stop_grace_period: 1s
+    entrypoint: ["/app/gatekeeper-entrypoint.sh"]
 
   justchess:
     build:
@@ -78,10 +84,31 @@ services:
         condition: service_started
     ports:
       - "3502:3502" # Justchess port.
+      - "2345:2345" # Delve debugger port.
+    volumes:
+      - ./repo/justchess:/app/src # Mount source code from host OS.
+      - ./justchess-entrypoint.sh:/app/justchess-entrypoint.sh:ro
     logging:
       options:
         max-size: "10m"
         max-file: "3"
+    stop_grace_period: 1s
+    entrypoint: ["/app/justchess-entrypoint.sh"]
+
+  # Disposable MySQL container to create an isolated test environment.
+  testdb:
+    build:
+      context: .
+      dockerfile: ./docker/mysql.Dockerfile
+    container_name: testdb
+    env_file:
+      - ./config/testdb.env
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
+      retries: 4
+      timeout: 2s
+    ports:
+      - "52000:52000"
 
   frontend:
     build:
@@ -90,15 +117,13 @@ services:
     container_name: frontend
     env_file:
       - ./config/frontend.env
-    depends_on:
-      - justchess
     ports:
       - "3000:3000" # Default NextJS port.
     volumes:
       - ./repo/frontend:/app # Mount source code from host OS.
       - /app/node_modules    # Do not copy node_modules from container.
       - /app/.next
-    command: npm run dev
+    entrypoint: pnpm dev
     logging:
       options:
         max-size: "10m"

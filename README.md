@@ -3,7 +3,7 @@
 Judo [Justchess-Docker] provides the easy way to set up a local development<br/>
 environment using Docker.
 
-## Quick start
+## Local installation
 
 First install the Docker Engine or Desktop (see https://docs.docker.com/engine/install).
 
@@ -18,21 +18,18 @@ cd judo
 ```
 
 Finally, execute `./judo.sh download` (works via WSL on Windows) script that<br/>
-will download the source code from GitHub repos and start the services.
-
-Changes to Go files require rebuilding the images, while changes to frontend<br/>
-files are displayed automatically.
+will download the source code from GitHub repos.
 
 ## Services
 
-Justchess project contains the following services:
+The JustChess project consists of the following services:
 
 - `rabbitmq` - exchanges events between the Gatekeeper and Justchess servers.<br/>
   The image provides a Web UI management tool, available on the port 15672.
 - `mysql` - a database that stores player's credentials, active sessions and <br/>
   completed games.
 - `testdb` - a disposable database that provides an isolated layer for running<br/>
-  tests.  Available only on `debug` branch.
+  tests.
 - `gatekeeper` - a WebSocker server that accepts and forwards events to the Justchess.
 - `justchess` - handles HTTP requests, Gatekeeper's events, and manages game states.
 - `frontend` - web ui.
@@ -48,8 +45,7 @@ the `config` folder:
   host, exchange, queues, and bindings.
 - `rabbitmq.conf` - tells the RabbitMQ Docker image to load and use data from `definitions.json`.
 - `mysql.env` - defines the MySQL user credentials and database name.
-- `testdb.env` - defines the MySQL user credentials and database name for testdb.<br/>
-  Available only on `debug` branch.
+- `testdb.env` - defines the MySQL user credentials and database name for testdb.
 - `gatekeeper.env` - defines the AMQP URL for connecting to RabbitMQ and the URL<br/>
   to which the Gatekeeper sends authorization verification requests.
 - `justchess.env` - defines the AMQP URL for connecting to RabbitMQ and the MySQL<br/>
@@ -67,17 +63,27 @@ To run all services, execute this command in the `judo` folder:
 You might need to prefix this command with sudo if you haven’t configured<br/>
 the system permissions for the Docker.
 
-## Debug and run tests
+## Display changes
 
-Switch to the `debug` branch:
+Changes to Go files require service restart, while changes to frontend files are<br/> displayed automatically.
+
+To restart the service, execute this command:
 
 ```
-git checkout debug
+./judo.sh restart <service>
+```
+
+## Debug and run tests
+
+To debug the backend services, execute:
+
+```
+./judo.sh debug
 ```
 
 Now the backend services will be running under the [Delve](https://github.com/go-delve/delve) debugger in Docker containers.<br/>
 
-To run tests, start services and execute this command in the `judo` folder:
+To run tests, start the backend services and execute this command:
 
 ```
 ./judo.sh test
@@ -85,9 +91,20 @@ To run tests, start services and execute this command in the `judo` folder:
 
 This will create a disposable MySQL database, run all tests and cleanup the resources.
 
+## Clean resources
+
+The following commands will delete all resources, allocated by `judo` services:
+
+```
+./judo.sh stop
+./juso.sh remove
+```
+
+You can also run `docker system prune` to clean the image build cache.
+
 ## License
 
-Copyright (c) 2025 Artem Bielikov
+Copyright (c) 2025 The JustChess Authors.
 
 This project is available under the Mozilla Public License, v. 2.0.<br/>
 See the [LICENSE](LICENSE) file for details.

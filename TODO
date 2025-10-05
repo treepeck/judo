@@ -1,0 +1,1 @@
+(*) set COMPOSE_BAKE=true and use buildx to speed up image building
