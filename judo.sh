@@ -70,7 +70,7 @@ download() {
             )
         else
             mkdir repo/${split[1]}
-            git clone ${split[0]} ./repo/${split[1]}
+            git clone -b dev ${split[0]} ./repo/${split[1]}
         fi
     done
 
