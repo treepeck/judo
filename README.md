@@ -30,7 +30,7 @@ The JustChess project consists of the following services:
   completed games.
 - `testdb` - a disposable database that provides an isolated layer for running<br/>
   tests.
-- `gatekeeper` - a WebSocker server that accepts and forwards events to the Justchess.
+- `gatekeeper` - a WebSocket server that accepts and forwards events to the Justchess.
 - `justchess` - handles HTTP requests, Gatekeeper's events, and manages game states.
 - `frontend` - web ui.
 
@@ -50,7 +50,7 @@ the `config` folder:
   to which the Gatekeeper sends authorization verification requests.
 - `justchess.env` - defines the AMQP URL for connecting to RabbitMQ and the MySQL<br/>
   URL for connecting to the database.
-- `frontend.env` - defines the NODE_ENV and disabled NextJS telemetry.
+- `frontend.env` - defines environment variables for frontend service.
 
 ## Run services
 
@@ -65,7 +65,8 @@ the system permissions for the Docker.
 
 ## Display changes
 
-Changes to Go files require service restart, while changes to frontend files are<br/> displayed automatically.
+Changes to Go files require service restart, while changes to frontend files are<br/>
+displayed automatically.
 
 To restart the service, execute this command:
 
