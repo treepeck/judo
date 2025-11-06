@@ -74,23 +74,14 @@ To restart the service, execute this command:
 ./judo.sh restart <service>
 ```
 
-## Debug and run tests
+## Run tests
 
-To debug the backend services, execute:
-
-```
-./judo.sh debug
-```
-
-Now the backend services will be running under the [Delve](https://github.com/go-delve/delve) debugger in Docker containers.<br/>
-
-To run tests, start the backend services and execute this command:
+To create a disposable MySQL database and run all tests, start the backend<br/>
+services and execute this command:
 
 ```
 ./judo.sh test
 ```
-
-This will create a disposable MySQL database, run all tests and cleanup the resources.
 
 ## Clean resources
 

@@ -47,15 +47,6 @@ remove() {
     echo "Services removed successfully"
 }
 
-# debug runs the gatekeeper and justchess services under the Delve debugger.
-debug() {
-	echo "Restarting backend services in debug mode..."
-	docker compose stop gatekeeper justchess
-	PROFILE=debug docker compose up -d gatekeeper justchess
-
-	echo "Services started successfully in debug mode"
-}
-
 # test starts the testdb service and runs tests for the justchess backend
 # service.
 test() {
@@ -126,7 +117,6 @@ help() {
     echo "    start              Start the local development services"
     echo "    stop               Stop all running services"
     echo "    remove             Remove all services and cleanup their data"
-	echo "    debug              Start backend services in the debug mode"
 	echo "    test               Run tests for the backend services. Note that justchess service must be up and running"
     echo "    download           Download latest changes from the source code repositories"
 	echo "    restart <service>  Stop the specified service and start it again"
@@ -141,7 +131,6 @@ case "$action" in
     start) start ;;
     stop) stop ;;
     remove) remove ;;
-	debug) debug ;;
 	test) test ;;
     download) download ;;
 	restart)
