@@ -14,6 +14,8 @@ CREATE TABLE IF NOT EXISTS session (
 	player_id CHAR(12) NOT NULL,
 	created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	expires_at DATETIME AS (created_at + INTERVAL 720 HOUR) STORED,
+	-- Timestamp of the player's last activity using this session.
+	last_active_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	FOREIGN KEY (player_id) REFERENCES player(id) ON DELETE CASCADE
 );
 

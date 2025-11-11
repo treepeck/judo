@@ -37,7 +37,7 @@ remove() {
     docker rmi judo-justchess
     docker rmi judo-frontend
     docker rmi judo-mysql
-    docker rmi rabbitmq:4.1.4-management-alpine
+    docker rmi rabbitmq:4.2-management-alpine
 	docker rmi judo-testdb && true
     # Remove volume.
     docker volume rm judo_mysql_data
@@ -54,7 +54,7 @@ test() {
 	docker compose up -d --wait testdb
 
 	echo "Running tests..."
-	docker exec -it justchess sh -c "cd /app/src && go test ./... -v -cover" && true
+	docker exec -it justchess sh -c "cd /app/src && go test ./... -v -cover -bench=. -benchmem" && true
 
 	echo "Shutting down the database..."
 	docker compose stop testdb

@@ -3,20 +3,20 @@
 services:
   rabbitmq:
     # Stable version with management UI.
-    image: rabbitmq:4.1.4-management-alpine
+    image: rabbitmq:4.2-management-alpine
     container_name: rabbitmq
     ports:
       - "5672:5672"   # Default RabbitMQ port.
       - "15672:15672" # RabbitMQ management web UI.
     volumes:
-      - ./config/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
+      - ./config/rabbit_mq.conf:/etc/rabbitmq/conf.d/rabbit_mq.conf:ro
       - ./config/definitions.json:/etc/rabbitmq/definitions.json:ro
     # This allows to start the gatekeeper service only when rabbitmq is ready
     # to accepts new AMQP connections.  Otherwise gatekeeper will crush after
     # first unsuccessfull connection try.
     healthcheck:
       test: ["CMD", "rabbitmqctl", "status"]
-      retries: 10
+      retries: 5
       timeout: 2s
     logging:
       options:
