@@ -43,7 +43,8 @@ the `config` folder:
 
 - `definitions.json` - defines the RabbitMQ user credentials, custom virtual<br/>
   host, exchange, queues, and bindings.
-- `rabbitmq.conf` - tells the RabbitMQ Docker image to load and use data from `definitions.json`.
+- `rabbit_mq.conf` - defines the RabbitMQ user credentials and tells the docker<br/>
+  image to load and use data from `definitions.json`.
 - `mysql.env` - defines the MySQL user credentials and database name.
 - `testdb.env` - defines the MySQL user credentials and database name for testdb.
 - `gatekeeper.env` - defines the AMQP URL for connecting to RabbitMQ and the URL<br/>
@@ -74,7 +75,7 @@ To restart the service, execute this command:
 ./judo.sh restart <service>
 ```
 
-## Run tests
+## Run tests and benchmarks
 
 To create a disposable MySQL database and run all tests, start the backend<br/>
 services and execute this command:
