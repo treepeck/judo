@@ -46,6 +46,7 @@ the `config` folder:
 - `rabbit_mq.conf` - defines the RabbitMQ user credentials and tells the docker<br/>
   image to load and use data from `definitions.json`.
 - `mysql.env` - defines the MySQL user credentials and database name.
+- `mysql.conf` - enables the MySQL event scheduler to clean up expired sessions.
 - `testdb.env` - defines the MySQL user credentials and database name for testdb.
 - `gatekeeper.env` - defines the AMQP URL for connecting to RabbitMQ and the URL<br/>
   to which the Gatekeeper sends authorization verification requests.

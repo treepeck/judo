@@ -41,6 +41,7 @@ services:
       timeout: 2s
     volumes:
       # Make db data persistent.
+      - ./config/mysql.conf:/etc/mysql/conf.d/my.cnf:ro
       - mysql_data:/var/lib/mysql
     logging:
       options:

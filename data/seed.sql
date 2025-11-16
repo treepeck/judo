@@ -19,6 +19,9 @@ CREATE TABLE IF NOT EXISTS session (
 	FOREIGN KEY (player_id) REFERENCES player(id) ON DELETE CASCADE
 );
 
+CREATE EVENT IF NOT EXISTS delete_expired_session
+ON SCHEDULE EVERY 6 HOUR
+DO DELETE FROM session WHERE expires_at < NOW();
 -- Insert test users.
 
 -- Password = fischer
