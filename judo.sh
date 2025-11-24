@@ -5,12 +5,7 @@ set -euo pipefail
 # start runs the local development services.
 start() {
     echo "Starting services..."
-	docker compose up -d rabbitmq mysql frontend
-
-	echo "Restarting backend services in dev mode..."
-	docker compose stop gatekeeper justchess
-	PROFILE=dev docker compose up -d gatekeeper justchess
-
+	docker compose up -d rabbitmq mysql gatekeeper justchess
     echo "Services started successfully"
 }
 
@@ -28,14 +23,12 @@ remove() {
     # Remove containers and mounted volumes.
     docker rm -fv gatekeeper
     docker rm -fv justchess
-    docker rm -fv frontend
     docker rm mysql
     docker rm rabbitmq
 	docker rm testdb && true # This service may not be present, so skip errors.
     # Remove images.
     docker rmi judo-gatekeeper
     docker rmi judo-justchess
-    docker rmi judo-frontend
     docker rmi judo-mysql
     docker rmi rabbitmq:4.2-management-alpine
 	docker rmi judo-testdb && true
@@ -72,7 +65,6 @@ download() {
     REPOS=(
         "https://github.com/treepeck/gatekeeper gatekeeper"
         "https://github.com/treepeck/justchess justchess"
-        "https://github.com/treepeck/justchess-frontend frontend"
     )
 
     if [ ! -d "./repo" ]; then
