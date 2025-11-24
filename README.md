@@ -32,7 +32,6 @@ The JustChess project consists of the following services:
   tests.
 - `gatekeeper` - a WebSocket server that accepts and forwards events to the Justchess.
 - `justchess` - handles HTTP requests, Gatekeeper's events, and manages game states.
-- `frontend` - web ui.
 
 See `docker-compose.yaml` for details about the network ports used by these services.
 
@@ -52,7 +51,6 @@ the `config` folder:
   to which the Gatekeeper sends authorization verification requests.
 - `justchess.env` - defines the AMQP URL for connecting to RabbitMQ and the MySQL<br/>
   URL for connecting to the database.
-- `frontend.env` - defines environment variables for frontend service.
 
 ## Run services
 
@@ -78,8 +76,8 @@ To restart the service, execute this command:
 
 ## Run tests and benchmarks
 
-To create a disposable MySQL database and run all tests, start the backend<br/>
-services and execute this command:
+To create a disposable MySQL database and run all tests, start the `justchess`<br/>
+service and execute this command:
 
 ```
 ./judo.sh test
