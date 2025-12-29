@@ -24,14 +24,11 @@ will download the source code from GitHub repos.
 
 The JustChess project consists of the following services:
 
-- `rabbitmq` - exchanges events between the Gatekeeper and Justchess servers.<br/>
-  The image provides a Web UI management tool, available on the port 15672.
-- `mysql` - a database that stores player's credentials, active sessions and <br/>
+- `mysql` - database that stores player's credentials, active sessions and <br/>
   completed games.
-- `testdb` - a disposable database that provides an isolated layer for running<br/>
+- `testdb` - disposable database that provides an isolated layer for running<br/>
   tests.
-- `gatekeeper` - a WebSocket server that accepts and forwards events to the Justchess.
-- `justchess` - handles HTTP requests, Gatekeeper's events, and manages game states.
+- `justchess` - HTTP and WebSocket server, written in Go.
 
 See `docker-compose.yaml` for details about the network ports used by these services.
 
@@ -40,17 +37,10 @@ See `docker-compose.yaml` for details about the network ports used by these serv
 `docker-compose.yaml` expects the following configuration files to be located in<br/>
 the `config` folder:
 
-- `definitions.json` - defines the RabbitMQ user credentials, custom virtual<br/>
-  host, exchange, queues, and bindings.
-- `rabbit_mq.conf` - defines the RabbitMQ user credentials and tells the docker<br/>
-  image to load and use data from `definitions.json`.
 - `mysql.env` - defines the MySQL user credentials and database name.
 - `mysql.conf` - enables the MySQL event scheduler to clean up expired sessions.
 - `testdb.env` - defines the MySQL user credentials and database name for testdb.
-- `gatekeeper.env` - defines the AMQP URL for connecting to RabbitMQ and the URL<br/>
-  to which the Gatekeeper sends authorization verification requests.
-- `justchess.env` - defines the AMQP URL for connecting to RabbitMQ and the MySQL<br/>
-  URL for connecting to the database.
+- `justchess.env` - defines the URL for connecting to the database.
 
 ## Run services
 

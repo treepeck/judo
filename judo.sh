@@ -5,7 +5,7 @@ set -euo pipefail
 # start runs the local development services.
 start() {
     echo "Starting services..."
-	docker compose up -d rabbitmq mysql gatekeeper justchess
+	docker compose up -d mysql justchess
     echo "Services started successfully"
 }
 
@@ -21,16 +21,12 @@ remove() {
     echo "Removing services..."
 
     # Remove containers and mounted volumes.
-    docker rm -fv gatekeeper
     docker rm -fv justchess
     docker rm mysql
-    docker rm rabbitmq
 	docker rm testdb && true # This service may not be present, so skip errors.
     # Remove images.
-    docker rmi judo-gatekeeper
     docker rmi judo-justchess
     docker rmi judo-mysql
-    docker rmi rabbitmq:4.2-management-alpine
 	docker rmi judo-testdb && true
     # Remove volume.
     docker volume rm judo_mysql_data
@@ -63,7 +59,6 @@ download() {
     IFS=' '
 
     REPOS=(
-        "https://github.com/treepeck/gatekeeper gatekeeper"
         "https://github.com/treepeck/justchess justchess"
     )
 
@@ -109,7 +104,7 @@ help() {
     echo "    start              Start the local development services"
     echo "    stop               Stop all running services"
     echo "    remove             Remove all services and cleanup their data"
-	echo "    test               Run tests for the backend services. Note that justchess service must be up and running"
+	echo "    test               Run tests. Note that justchess service must be up and running"
     echo "    download           Download latest changes from the source code repositories"
 	echo "    restart <service>  Stop the specified service and start it again"
     echo "    help               Print this message"

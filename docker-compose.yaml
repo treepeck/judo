@@ -1,35 +1,12 @@
-# See README.md for introduction.
-
 services:
-  rabbitmq:
-    # Stable version with management UI.
-    image: rabbitmq:4.2-management-alpine
-    container_name: rabbitmq
-    ports:
-      - "5672:5672"   # Default RabbitMQ port.
-      - "15672:15672" # RabbitMQ management web UI.
-    volumes:
-      - ./config/rabbit_mq.conf:/etc/rabbitmq/conf.d/rabbit_mq.conf:ro
-      - ./config/definitions.json:/etc/rabbitmq/definitions.json:ro
-    # This allows to start the gatekeeper service only when rabbitmq is ready
-    # to accepts new AMQP connections.  Otherwise gatekeeper will crush after
-    # first unsuccessfull connection try.
-    healthcheck:
-      test: ["CMD", "rabbitmqctl", "status"]
-      retries: 5
-      timeout: 2s
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "3"
-
   mysql:
     build:
       context: .
       dockerfile: ./docker/mysql.Dockerfile
     container_name: mysql
     ports:
-      - "3306:3306" # Default MySQL port.
+      # Default MySQL port.
+      - "3306:3306"
     env_file:
       - ./config/mysql.env
     # This allows to start the justchess service only when mysql is ready
@@ -48,27 +25,6 @@ services:
         max-size: "10m"
         max-file: "3"
 
-  gatekeeper:
-    build:
-      context: .
-      dockerfile: ./docker/gatekeeper.Dockerfile
-    container_name: gatekeeper
-    env_file:
-      - ./config/gatekeeper.env
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
-    ports:
-      - "3503:3503"                  # Gatekeeper port.
-    volumes:
-      - ./repo/gatekeeper:/app/src   # Mount source code from host OS.
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "3"
-    stop_grace_period: 1s
-    entrypoint: go run cmd/gatekeeper/main.go
-
   justchess:
     build:
       context: .
@@ -79,12 +35,11 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
-      gatekeeper:
-        condition: service_started
     ports:
-      - "3502:3502"                  # Justchess port.
+      - "3502:3502"
     volumes:
-      - ./repo/justchess:/app/src    # Mount source code from host OS.
+      # Mount source code from host OS.
+      - ./repo/justchess:/app/src
     logging:
       options:
         max-size: "10m"
