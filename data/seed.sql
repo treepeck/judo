@@ -14,30 +14,22 @@ CREATE TABLE IF NOT EXISTS player (
 
 CREATE TABLE IF NOT EXISTS session (
 	id CHAR(32) BINARY PRIMARY KEY,
-	player_id CHAR(12) NOT NULL,
+	player_id CHAR(12) BINARY NOT NULL,
 	created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	expires_at DATETIME AS (created_at + INTERVAL 720 HOUR) STORED,
 	FOREIGN KEY (player_id) REFERENCES player(id) ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS rating_period (
-	id BIGINT AUTO_INCREMENT PRIMARY KEY,
-	created_at DATETIME NOT NULl DEFAULT CURRENT_TIMESTAMP,
-	finishes_at DATETIME AS (created_AT + INTERVAL 168 HOUR) STORED
 );
 
 CREATE TABLE IF NOT EXISTS game (
 	id CHAR(12) BINARY PRIMARY KEY,
 	white_id CHAR(12) BINARY NOT NULL,
 	black_id CHAR(12) BINARY NOT NULL,
-	period_id BIGINT NOT NULL,
 	result ENUM('0-1', '1-0', '1/2-1/2', '*'),
 	termination ENUM('abandoned', 'adjudication', 'normal', 'rules infraction',
 	'time forfeit', 'unterminated'),
 	created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	FOREIGN KEY (white_id) REFERENCES player(id),
-	FOREIGN KEY (black_id) REFERENCES player(id),
-	FOREIGN KEY (period_id) REFERENCES rating_period(id)
+	FOREIGN KEY (black_id) REFERENCES player(id)
 );
 
 CREATE EVENT IF NOT EXISTS delete_expired_session
