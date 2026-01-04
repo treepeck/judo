@@ -91,7 +91,7 @@ download() {
 rebuild() {
 	echo "Rebuilding service $1..."
 
-	docker compose up --build --force-recreate -d $1
+	docker compose up --build --force-recreate --no-deps -d $1
 
 	echo "Rebuilding process finished"
 }
