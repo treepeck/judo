@@ -91,7 +91,7 @@ download() {
 rebuild() {
 	echo "Rebuilding service $1..."
 
-	docker compose up --build -d $1
+	docker compose up --build --force-recreate -d $1
 
 	echo "Rebuilding process finished"
 }
@@ -119,7 +119,7 @@ case "$action" in
     remove) remove ;;
 	test) test ;;
     download) download ;;
-	restart)
-		restart "$service" ;;
+	rebuild)
+		rebuild "$service" ;;
     *) help ;;
 esac
