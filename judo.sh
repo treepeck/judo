@@ -87,14 +87,13 @@ download() {
     echo "Source code downloaded successfully"
 }
 
-# restart stops the service with the specified name and starts it again.
-restart() {
-	echo "Restarting service $1..."
+# rebuild rebuilds the image of the specified service and starts it.
+rebuild() {
+	echo "Rebuilding service $1..."
 
-	docker compose stop $1
-	docker compose up -d $1
+	docker compose up --build -d $1
 
-	echo "Restarting process finished"
+	echo "Rebuilding process finished"
 }
 
 help() {
@@ -106,7 +105,7 @@ help() {
     echo "    remove             Remove all services and cleanup their data"
 	echo "    test               Run tests. Note that justchess service must be up and running"
     echo "    download           Download latest changes from the source code repositories"
-	echo "    restart <service>  Stop the specified service and start it again"
+	echo "    rebuild <service>  Rebuild the specified service and start it again"
     echo "    help               Print this message"
 }
 
