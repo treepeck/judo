@@ -1,14 +1,14 @@
 services:
-  mysql:
+  db:
     build:
       context: .
-      dockerfile: ./docker/mysql.Dockerfile
-    container_name: mysql
+      dockerfile: ./docker/db.Dockerfile
+    container_name: db
     ports:
       # Default MySQL port.
       - "3306:3306"
     env_file:
-      - ./config/mysql.env
+      - ./config/db.env
     # This allows to start the justchess service only when mysql is ready
     # to accepts new connections.  Otherwise justchess will crush after
     # first unsuccessfull connection try.
@@ -18,8 +18,8 @@ services:
       timeout: 2s
     volumes:
       # Make db data persistent.
-      - ./config/mysql.conf:/etc/mysql/conf.d/my.cnf:ro
-      - mysql_data:/var/lib/mysql
+      - ./config/db.conf:/etc/mysql/conf.d/my.cnf:ro
+      - db_data:/var/lib/mysql
     logging:
       options:
         max-size: "10m"
@@ -33,7 +33,7 @@ services:
     env_file:
       - ./config/justchess.env
     depends_on:
-      mysql:
+      db:
         condition: service_healthy
     ports:
       - "3502:3502"
@@ -51,7 +51,7 @@ services:
   testdb:
     build:
       context: .
-      dockerfile: ./docker/mysql.Dockerfile
+      dockerfile: ./docker/db.Dockerfile
     container_name: testdb
     env_file:
       - ./config/testdb.env
@@ -63,4 +63,4 @@ services:
       - "52000:52000"
 
 volumes:
-  mysql_data:
+  db_data:

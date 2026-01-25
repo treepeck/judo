@@ -24,7 +24,7 @@ will download the source code from GitHub repos.
 
 The JustChess project consists of the following services:
 
-- `mysql` - database that stores player's credentials, active sessions and <br/>
+- `db` - MySQL database that stores player's credentials, active sessions and<br/>
   completed games.
 - `testdb` - disposable database that provides an isolated layer for running<br/>
   tests.
@@ -37,8 +37,8 @@ See `docker-compose.yaml` for details about the network ports used by these serv
 `docker-compose.yaml` expects the following configuration files to be located in<br/>
 the `config` folder:
 
-- `mysql.env` - defines the MySQL user credentials and database name.
-- `mysql.conf` - enables the MySQL event scheduler to clean up expired sessions.
+- `db.env` - defines the MySQL user credentials and database name.
+- `db.conf` - enables the MySQL event scheduler to clean up expired sessions.
 - `testdb.env` - defines the MySQL user credentials and database name for testdb.
 - `justchess.env` - defines the URL for connecting to the database.
 
