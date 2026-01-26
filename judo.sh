@@ -62,6 +62,7 @@ download() {
 
     REPOS=(
         "https://github.com/treepeck/justchess justchess"
+		"https://github.com/treepeck/chego chego"
     )
 
     if [ ! -d "./repo" ]; then
@@ -78,11 +79,11 @@ download() {
         if [ -d "$repopath" ]; then
             (
                 cd $repopath
-                git pull origin dev
+                git pull origin
             )
         else
             mkdir $repopath
-            git clone -b dev ${split[0]} $repopath
+            git clone ${split[0]} $repopath
         fi
     done
 
