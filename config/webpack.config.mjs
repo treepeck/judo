@@ -2,12 +2,12 @@ import { glob } from "node:fs/promises"
 import MiniCssExtractPlugin from "mini-css-extract-plugin"
 
 const scripts = []
-for await (const entry of glob("./scripts/*.js")) {
+for await (const entry of glob("./scripts/**/*.js")) {
 	scripts.push("./" + entry)
 }
 
 const css = []
-for await (const entry of glob("./css/*.css")) {
+for await (const entry of glob("./css/**/*.css")) {
 	css.push("./" + entry)
 }
 
