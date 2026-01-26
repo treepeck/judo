@@ -29,6 +29,7 @@ The JustChess project consists of the following services:
 - `testdb` - disposable database that provides an isolated layer for running<br/>
   tests.
 - `justchess` - HTTP and WebSocket server, written in Go.
+- `webpack` - JS and CSS bundler.
 
 See `docker-compose.yaml` for details about the network ports used by these services.
 
@@ -55,8 +56,8 @@ the system permissions for the Docker.
 
 ## Display changes
 
-Changes to Go files require service restart, while changes to frontend files are<br/>
-displayed automatically.
+Changes to Go files and templates requires rebuilding `justchess` service, while<br/>
+changes to scripts and css are displayed automatically.
 
 To restart the service, execute this command:
 

@@ -5,7 +5,7 @@ set -euo pipefail
 # start runs the local development services.
 start() {
     echo "Starting services..."
-	docker compose up -d db justchess
+	docker compose up -d db justchess webpack
     echo "Services started successfully"
 }
 
@@ -22,10 +22,12 @@ remove() {
 
     # Remove containers and mounted volumes.
     docker rm -fv justchess
+	docker rm webpack
     docker rm db
 	docker rm testdb && true # This service may not be present, so skip errors.
     # Remove images.
     docker rmi judo-justchess
+	docker rmi judo-webpack
     docker rmi judo-db
 	docker rmi judo-testdb && true
     # Remove volume.

@@ -47,6 +47,20 @@ services:
     stop_grace_period: 1s
     entrypoint: go run cmd/justchess/main.go
 
+  webpack:
+    build:
+      context: .
+      dockerfile: ./docker/webpack.Dockerfile
+    container_name: webpack
+    working_dir: /app
+    volumes:
+      # Mount scripts from host OS.
+      - ./repo/justchess/_web/scripts:/app/scripts
+      # Mount css files from host OS.
+      - ./repo/justchess/_web/css:/app/css
+      - ./repo/justchess/_web/bundles:/app/bundles
+    command: sh -c "npx webpack --config ./webpack.config.mjs --watch"
+
   # Disposable MySQL container to create an isolated test environment.
   testdb:
     build:
