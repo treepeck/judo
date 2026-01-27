@@ -87,7 +87,7 @@ You can also run `docker system prune` to clean the image build cache.
 
 ## License
 
-Copyright (c) 2025 The JustChess Authors.
+Copyright (c) 2025 Artem Bielikov
 
 This project is available under the Mozilla Public License, v. 2.0.<br/>
 See the [LICENSE](LICENSE) file for details.
