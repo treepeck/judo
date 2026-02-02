@@ -1,3 +1,4 @@
+import webpack from "webpack"
 import { glob } from "node:fs/promises"
 import MiniCssExtractPlugin from "mini-css-extract-plugin"
 
@@ -38,6 +39,9 @@ export default {
 	plugins: [
 		new MiniCssExtractPlugin({
 			filename: "bundle.css",
+		}),
+		new webpack.DefinePlugin({
+			"API_URL": JSON.stringify("http://localhost:3502"),
 		}),
 	],
 }
