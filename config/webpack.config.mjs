@@ -42,6 +42,7 @@ export default {
 		}),
 		new webpack.DefinePlugin({
 			"API_URL": JSON.stringify("http://localhost:3502"),
+			"WS_URL": JSON.stringify("ws://localhost:3502"),
 		}),
 	],
 }
