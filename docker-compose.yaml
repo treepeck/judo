@@ -59,7 +59,7 @@ services:
       # Mount css files from host OS.
       - ./repo/justchess/_web/css:/app/css
       - ./repo/justchess/_web/bundles:/app/bundles
-    command: sh -c "npx webpack --config ./webpack.config.mjs --watch"
+    command: sh -c "npx webpack --config ./webpack.config.mjs --watch --watch-options-poll=1000"
 
   # Disposable MySQL container to create an isolated test environment.
   testdb:
