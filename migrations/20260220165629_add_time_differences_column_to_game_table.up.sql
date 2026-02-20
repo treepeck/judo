@@ -1,0 +1,1 @@
+ALTER TABLE game ADD time_differences TINYBLOB;
