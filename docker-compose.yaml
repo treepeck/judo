@@ -1,8 +1,6 @@
 services:
   db:
-    build:
-      context: .
-      dockerfile: ./docker/db.Dockerfile
+    image: mysql:latest
     container_name: db
     ports:
       # Default MySQL port.
@@ -17,8 +15,8 @@ services:
       retries: 10
       timeout: 2s
     volumes:
-      # Make db data persistent.
       - ./config/db.conf:/etc/mysql/conf.d/my.cnf:ro
+      # Make db data persistent.
       - db_data:/var/lib/mysql
     logging:
       options:
@@ -40,6 +38,8 @@ services:
     volumes:
       # Mount source code from host OS.
       - ./repo/justchess:/app/src
+      # Mount migrations from host OS.
+      - ./migrations:/app/migrations
     logging:
       options:
         max-size: "10m"
@@ -63,9 +63,7 @@ services:
 
   # Disposable MySQL container to create an isolated test environment.
   testdb:
-    build:
-      context: .
-      dockerfile: ./docker/db.Dockerfile
+    image: mysql:latest
     container_name: testdb
     env_file:
       - ./config/testdb.env

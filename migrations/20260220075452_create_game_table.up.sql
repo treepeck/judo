@@ -1,0 +1,17 @@
+CREATE TABLE IF NOT EXISTS game (
+	id CHAR(12) BINARY PRIMARY KEY,
+	white_id CHAR(12) BINARY NOT NULL,
+	black_id CHAR(12) BINARY NOT NULL,
+	moves_length INT UNSIGNED NOT NULL DEFAULT 0,
+	moves TINYBLOB,
+	time_control TINYINT NOT NULL,
+	time_bonus TINYINT NOT NULL,
+	result TINYINT NOT NULL DEFAULT 0,
+	termination TINYINT NOT NULL DEFAULT 0,
+	created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	FOREIGN KEY (white_id) REFERENCES player(id),
+	FOREIGN KEY (black_id) REFERENCES player(id),
+	CHECK (result IN (0, 1, 2, 3)),
+	CHECK (termination IN (0, 1, 2, 3, 4, 5, 6, 7, 8, 9))
+);

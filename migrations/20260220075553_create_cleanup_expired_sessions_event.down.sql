@@ -1,0 +1,1 @@
+DROP EVENT IF EXISTS cleanup_expired_session;

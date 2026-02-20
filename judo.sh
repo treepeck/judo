@@ -2,10 +2,31 @@
 
 set -euo pipefail
 
+# Declaration of help messages.
+actionHelp="Usage: $0 <action>
+Available actions:
+    start                            Start services
+    stop                             Stop services
+    remove                           Remove services and delete their data
+    test                             Run tests and benchmarks. Note that justchess service must be up and running
+    download                         Pull latest changes from the source code repositories
+    rebuild   <service>              Rebuild and restart the specified service
+    migration <option>  <filename>   Manage db migrations"
+serviceHelp="Available services:
+    justchess                        HTTP and WebSocker server
+	db                               Primary MySQL database
+	testdb                           Disposable MySQL database to run tests
+	webpack                          JS and CSS bundler"
+optionHelp="Available options:
+	create                           Create a new SQL migration file
+	up                               Apply all up migrations
+	down                             Applies the last down migration"
+
+
 # start runs the local development services.
 start() {
     echo "Starting services..."
-	docker compose up -d db justchess webpack
+	docker compose up -d db webpack justchess
     echo "Services started successfully"
 }
 
@@ -18,21 +39,21 @@ stop() {
 
 # remove cleans all resources, allocated by the judo services.
 remove() {
-    echo "Removing services..."
-
-    # Remove containers and mounted volumes.
+    echo "Removing containers..."
     docker rm -fv justchess
 	docker rm webpack
     docker rm db
-	docker rm testdb && true # This service may not be present, so skip errors.
-    # Remove images.
+	docker rm testdb && true # This container may not be present, so skip errors.
+
+	echo "Removing images..."
     docker rmi judo-justchess
 	docker rmi judo-webpack
-    docker rmi judo-db
-	docker rmi judo-testdb && true
-    # Remove volume.
+    docker rmi mysql:latest
+
+    echo "Removing database volume..."
     docker volume rm judo_db_data
-    # Remove network.
+
+	echo "Removing judo network..."
     docker network rm judo_default
 
     echo "Services removed successfully"
@@ -93,28 +114,35 @@ download() {
 # rebuild rebuilds the image of the specified service and starts it.
 rebuild() {
 	echo "Rebuilding service $1..."
-
 	docker compose up --build --force-recreate --no-deps -d $1
-
 	echo "Rebuilding process finished"
 }
 
-help() {
-    echo "Usage: $0 <action>"
-
-    echo "Available actions:"
-    echo "    start              Start the local development services"
-    echo "    stop               Stop all running services"
-    echo "    remove             Remove all services and cleanup their data"
-	echo "    test               Run tests. Note that justchess service must be up and running"
-    echo "    download           Download latest changes from the source code repositories"
-	echo "    rebuild <service>  Rebuild the specified service and start it again"
-    echo "    help               Print this message"
+# migration manages database migrations.
+migration() {
+	case "$1" in
+		create)
+			docker exec justchess migrate create -ext sql -dir /app/migrations "$2"
+			# Set file owner to host OS user since user in docker is root and
+		    # that makes migration file impossible to modify outside the justchess
+			# container.
+			docker exec justchess chown -R "$(id -u)":"$(id -g)" /app/migrations
+			;;
+		up)
+			docker exec justchess sh -c 'migrate -database "mysql://${DB_DSN}" -path /app/migrations up'
+			;;
+		down)
+			docker exec justchess sh -c 'migrate -database "mysql://${DB_DSN}" -path /app/migrations down 1'
+			;;
+		*) echo "$optionHelp" ;;
+	esac
 }
 
-# Parse flag.
-action="${1:-help}"
-service="${2:-justchess}"
+# Parse arguments.
+action="${1:-}"
+service="${2:-}"
+option="${2:-}"
+filename="${3:-}"
 
 case "$action" in
     start) start ;;
@@ -124,5 +152,7 @@ case "$action" in
     download) download ;;
 	rebuild)
 		rebuild "$service" ;;
-    *) help ;;
+	migration)
+		migration "$option" "$filename" ;;
+    *) echo "$actionHelp" ;;
 esac

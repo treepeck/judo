@@ -1,7 +1,6 @@
 [![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
 
-Judo [Justchess-Docker] provides the easy way to set up a local development<br/>
-environment using Docker.
+Judo [JustChess-Docker] is a local development environment for [justchess.org](https://justchess.org)
 
 ## Local installation
 
@@ -52,7 +51,7 @@ To run all services, execute this command in the `judo` folder:
 ```
 
 You might need to prefix this command with sudo if you haven’t configured<br/>
-the system permissions for the Docker.
+the system permissions for the Docker engine.
 
 ## Display changes
 
@@ -64,6 +63,15 @@ To restart the service, execute this command:
 ```
 ./judo.sh restart <service>
 ```
+
+## Migrations
+
+`justchess` container includes the `golang-migrate` CLI tool to perform <br/>
+migration-based schema updates.  Once the `justchess` service is started<br/>
+run `./judo.sh migration up` to apply all `*.up.sql` migrations files<br/>
+under the `migrations` folder.
+
+For more details see [judo.sh](./judo.sh).
 
 ## Run tests and benchmarks
 
