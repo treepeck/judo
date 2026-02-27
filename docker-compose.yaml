@@ -39,7 +39,7 @@ services:
       # Mount source code from host OS.
       - ./repo/justchess:/app/src
       # Mount migrations from host OS.
-      - ./migrations:/app/migrations
+      - ./db/migrations:/app/migrations
     logging:
       options:
         max-size: "10m"

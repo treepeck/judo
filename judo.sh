@@ -11,7 +11,8 @@ Available actions:
     test                             Run tests and benchmarks. Note that justchess service must be up and running
     download                         Pull latest changes from the source code repositories
     rebuild   <service>              Rebuild and restart the specified service
-    migration <option>  <filename>   Manage db migrations"
+    migration <option>  <filename>   Manage db migrations
+    seed                             Insert mock data into db for testing purposes"
 serviceHelp="Available services:
     justchess                        HTTP and WebSocker server
 	db                               Primary MySQL database
@@ -118,7 +119,7 @@ rebuild() {
 	echo "Rebuilding process finished"
 }
 
-# migration manages database migrations.
+# migration manages the database migrations.
 migration() {
 	case "$1" in
 		create)
@@ -138,6 +139,17 @@ migration() {
 	esac
 }
 
+# seed seeds the database with mock data for testing purposes.
+seed() {
+	echo "Inserting mock players..."
+	docker exec -i db mysql -u admin -padmin justchess-db < ./db/seed/players.sql
+
+	echo "Inserting mock games"
+	docker exec -i db mysql -u admin -padmin justchess-db < ./db/seed/games.sql
+
+	echo "Database seeded successfully"
+}
+
 # Parse arguments.
 action="${1:-}"
 service="${2:-}"
@@ -154,5 +166,6 @@ case "$action" in
 		rebuild "$service" ;;
 	migration)
 		migration "$option" "$filename" ;;
+	seed) seed ;;
     *) echo "$actionHelp" ;;
 esac
