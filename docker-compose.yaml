@@ -45,7 +45,7 @@ services:
         max-size: "10m"
         max-file: "3"
     stop_grace_period: 1s
-    entrypoint: go run cmd/justchess/main.go
+    entrypoint: go run -race cmd/justchess/main.go
 
   webpack:
     build:

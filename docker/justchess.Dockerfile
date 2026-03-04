@@ -1,4 +1,7 @@
-FROM golang:1.24.6-alpine
+FROM golang:1.26.0-alpine
+
+RUN apk add --no-cache gcc musl-dev
+
 WORKDIR /app/src
 
 # Install dependencies.
