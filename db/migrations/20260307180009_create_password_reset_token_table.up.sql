@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS password_reset_token (
+	id CHAR(32) BINARY PRIMARY KEY,
+	player_id CHAR(12) BINARY NOT NULL,
+	new_password_hash BINARY(60) NOT NULL,
+	is_activated BOOLEAN NOT NULL DEFAULT FALSE,
+	FOREIGN KEY (player_id) REFERENCES player(id) ON DELETE CASCADE
+);
