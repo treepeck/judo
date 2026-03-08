@@ -27,7 +27,7 @@ optionHelp="Available options:
 # start runs the local development services.
 start() {
     echo "Starting services..."
-	docker compose up -d db webpack justchess
+	docker compose up -d db webpack justchess mailpit
     echo "Services started successfully"
 }
 
@@ -44,11 +44,13 @@ remove() {
     docker rm -fv justchess
 	docker rm webpack
     docker rm db
+	docker rm mailpit
 	docker rm testdb && true # This container may not be present, so skip errors.
 
 	echo "Removing images..."
     docker rmi judo-justchess
 	docker rmi judo-webpack
+	docker rmi axllent/mailpit
     docker rmi mysql:latest
 
     echo "Removing database volume..."

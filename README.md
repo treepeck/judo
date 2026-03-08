@@ -29,6 +29,7 @@ The JustChess project consists of the following services:
   tests.
 - `justchess` - HTTP and WebSocket server, written in Go.
 - `webpack` - JS and CSS bundler.
+- `mailpit` - Email testing tool.
 
 See `docker-compose.yaml` for details about the network ports used by these services.
 
