@@ -1,0 +1,3 @@
+ALTER TABLE password_reset_token
+DROP FOREIGN KEY password_reset_token_ibfk_1;
+ALTER TABLE password_reset_token DROP CONSTRAINT unique_player_id;

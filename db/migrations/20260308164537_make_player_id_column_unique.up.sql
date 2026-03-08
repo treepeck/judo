@@ -1,0 +1,1 @@
+ALTER TABLE password_reset_token ADD CONSTRAINT unique_player_id UNIQUE (player_id);
