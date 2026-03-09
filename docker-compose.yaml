@@ -61,19 +61,6 @@ services:
       - ./repo/justchess/_web/bundles:/app/bundles
     command: sh -c "npx webpack --config ./webpack.config.mjs --watch --watch-options-poll=1000"
 
-  # Disposable MySQL container to create an isolated test environment.
-  testdb:
-    image: mysql:latest
-    container_name: testdb
-    env_file:
-      - ./config/testdb.env
-    healthcheck:
-      test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
-      retries: 4
-      timeout: 2s
-    ports:
-      - "52000:52000"
-
   mailpit:
     image: axllent/mailpit
     container_name: mailpit

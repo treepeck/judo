@@ -45,7 +45,6 @@ remove() {
 	docker rm webpack
     docker rm db
 	docker rm mailpit
-	docker rm testdb && true # This container may not be present, so skip errors.
 
 	echo "Removing images..."
     docker rmi judo-justchess
@@ -65,16 +64,8 @@ remove() {
 # test starts the testdb service and runs tests for the justchess backend
 # service.
 test() {
-	echo "Creating a disposable database..."
-	docker compose up -d --wait testdb
-
 	echo "Running tests..."
 	docker exec -it justchess sh -c "cd /app/src && go test ./... -v -cover -bench=. -benchmem" && true
-
-	echo "Shutting down the database..."
-	docker compose stop testdb
-	docker rm -fv testdb
-
 	echo "Testing process finished"
 }
 

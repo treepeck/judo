@@ -25,8 +25,6 @@ The JustChess project consists of the following services:
 
 - `db` - MySQL database that stores player's credentials, active sessions and<br/>
   completed games.
-- `testdb` - disposable database that provides an isolated layer for running<br/>
-  tests.
 - `justchess` - HTTP and WebSocket server, written in Go.
 - `webpack` - JS and CSS bundler.
 - `mailpit` - Email testing tool.
@@ -40,7 +38,6 @@ the `config` folder:
 
 - `db.env` - defines the MySQL user credentials and database name.
 - `db.conf` - enables the MySQL event scheduler to clean up expired sessions.
-- `testdb.env` - defines the MySQL user credentials and database name for testdb.
 - `justchess.env` - defines the URL for connecting to the database.
 
 ## Run services
@@ -76,8 +73,7 @@ For more details see [judo.sh](./judo.sh).
 
 ## Run tests and benchmarks
 
-To create a disposable MySQL database and run all tests, start the `justchess`<br/>
-service and execute this command:
+Start the `justchess` service and execute this command:
 
 ```
 ./judo.sh test
