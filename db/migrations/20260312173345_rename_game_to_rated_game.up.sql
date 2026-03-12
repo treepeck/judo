@@ -1,0 +1,1 @@
+RENAME TABLE game TO rated_game;
