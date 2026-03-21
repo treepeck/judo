@@ -7,14 +7,14 @@ for await (const entry of glob("./scripts/**/*.js")) {
 	scripts.push("./" + entry)
 }
 
-const css = []
-for await (const entry of glob("./css/**/*.css")) {
-	css.push("./" + entry)
+const styles = []
+for await (const entry of glob("./styles/**/*.css")) {
+	styles.push("./" + entry)
 }
 
 export default {
 	mode: "development",
-	entry: [...scripts, ...css],
+	entry: [...scripts, ...styles],
 	output: {
 		path: "/app/bundles",
 		filename: "bundle.js",

@@ -57,7 +57,7 @@ services:
       # Mount scripts from host OS.
       - ./repo/justchess/_web/scripts:/app/scripts
       # Mount css files from host OS.
-      - ./repo/justchess/_web/css:/app/css
+      - ./repo/justchess/_web/styles:/app/styles
       - ./repo/justchess/_web/bundles:/app/bundles
     command: sh -c "npx webpack --config ./webpack.config.mjs --watch --watch-options-poll=1000"
 
