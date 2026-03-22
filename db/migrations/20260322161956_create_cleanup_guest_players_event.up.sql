@@ -1,0 +1,3 @@
+CREATE EVENT IF NOT EXISTS cleanup_guest_player
+ON SCHEDULE EVERY 24 HOUR
+DO DELETE FROM player WHERE is_guest = TRUE;
