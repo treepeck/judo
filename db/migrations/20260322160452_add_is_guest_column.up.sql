@@ -1,0 +1,1 @@
+ALTER TABLE player ADD COLUMN is_guest BOOLEAN NOT NULL;
