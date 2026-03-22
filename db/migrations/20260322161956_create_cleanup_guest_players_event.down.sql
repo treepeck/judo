@@ -1,1 +1,0 @@
-DROP EVENT IF EXISTS cleanup_guest_player;

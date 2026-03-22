@@ -1,1 +1,0 @@
-ALTER TABLE player DROP INDEX name;
