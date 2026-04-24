@@ -98,7 +98,11 @@ download() {
             )
         else
             mkdir $repopath
-            git clone ${split[0]} $repopath
+			if [[ "${split[1]}" == "justchess" ]]; then
+				git clone -b dev ${split[0]} $repopath
+			else
+				git clone ${split[0]} $repopath
+			fi
         fi
     done
 
