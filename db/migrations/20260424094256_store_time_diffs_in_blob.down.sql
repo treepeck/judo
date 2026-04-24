@@ -1,0 +1,1 @@
+ALTER TABLE rated_game MODIFY COLUMN time_differences TINYBLOB;
