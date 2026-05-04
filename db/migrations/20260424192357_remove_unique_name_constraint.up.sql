@@ -1,0 +1,1 @@
+DROP INDEX `name` ON signup_token;
