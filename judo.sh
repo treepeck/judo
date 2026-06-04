@@ -16,8 +16,7 @@ Available actions:
 serviceHelp="Available services:
     justchess                        HTTP and WebSocker server
 	db                               Primary MySQL database
-	testdb                           Disposable MySQL database to run tests
-	webpack                          JS and CSS bundler"
+	testdb                           Disposable MySQL database to run tests"
 optionHelp="Available options:
 	create                           Create a new SQL migration file
 	up                               Apply all up migrations
@@ -27,7 +26,7 @@ optionHelp="Available options:
 # start runs the local development services.
 start() {
     echo "Starting services..."
-	docker compose up -d db webpack justchess mailpit
+	docker compose up -d db justchess mailpit
     echo "Services started successfully"
 }
 
@@ -42,13 +41,11 @@ stop() {
 remove() {
     echo "Removing containers..."
     docker rm -fv justchess
-	docker rm webpack
     docker rm db
 	docker rm mailpit
 
 	echo "Removing images..."
     docker rmi judo-justchess
-	docker rmi judo-webpack
 	docker rmi axllent/mailpit
     docker rmi mysql:latest
 

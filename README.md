@@ -26,7 +26,6 @@ The JustChess project consists of the following services:
 - `db` - MySQL database that stores player's credentials, active sessions and<br/>
   completed games.
 - `justchess` - HTTP and WebSocket server, written in Go.
-- `webpack` - JS and CSS bundler.
 - `mailpit` - Email testing tool.
 
 See `docker-compose.yaml` for details about the network ports used by these services.

@@ -47,20 +47,6 @@ services:
     stop_grace_period: 1s
     entrypoint: go run -race cmd/justchess/main.go
 
-  webpack:
-    build:
-      context: .
-      dockerfile: ./docker/webpack.Dockerfile
-    container_name: webpack
-    working_dir: /app
-    volumes:
-      # Mount scripts from host OS.
-      - ./repo/justchess/_web/scripts:/app/scripts
-      # Mount css files from host OS.
-      - ./repo/justchess/_web/styles:/app/styles
-      - ./repo/justchess/_web/bundles:/app/bundles
-    command: sh -c "npx webpack --config ./webpack.config.mjs --watch --watch-options-poll=1000"
-
   mailpit:
     image: axllent/mailpit
     container_name: mailpit
