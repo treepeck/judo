@@ -5,7 +5,8 @@
 !/repo/
 !/repo/justchess/
 !/repo/justchess/_web/
-!/repo/justchess/_web/styles/
-!/repo/justchess/_web/scripts/
-!/repo/justchess/_web/styles/**
-!/repo/justchess/_web/scripts/**
+!/repo/justchess/_web/assets/
+!/repo/justchess/_web/assets/styles/
+!/repo/justchess/_web/assets/scripts/
+!/repo/justchess/_web/assets/styles/**
+!/repo/justchess/_web/assets/scripts/**
