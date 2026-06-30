@@ -1,4 +1,4 @@
-[![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
+[![YouTube](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/watch?v=yRRJ4SBcM_g)
 
 Judo [JustChess-Docker] is a local development environment for [justchess.org](https://justchess.org)
 
