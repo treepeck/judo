@@ -1,1 +1,0 @@
-ALTER TABLE signup_token ADD CONSTRAINT `name` UNIQUE (name);

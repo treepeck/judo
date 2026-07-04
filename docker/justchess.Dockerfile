@@ -9,4 +9,7 @@ COPY repo/justchess/go.mod repo/justchess/go.sum ./
 RUN go mod download
 
 # Install migration tool.
-RUN go install -tags 'mysql' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
+RUN go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
+
+# Run database migrations.
+# RUN migrate -database "postgres://${DB_DSN}" -path /app/migrations up

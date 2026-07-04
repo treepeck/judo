@@ -1,2 +1,0 @@
-ALTER TABLE rated_game MODIFY COLUMN moves BLOB;
-ALTER TABLE engine_game MODIFY COLUMN moves BLOB;

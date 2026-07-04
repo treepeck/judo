@@ -1,23 +1,26 @@
 services:
   db:
-    image: mysql:latest
+    build:
+      context: .
+      dockerfile: ./docker/db.Dockerfile
     container_name: db
     ports:
-      # Default MySQL port.
-      - "3306:3306"
+      # Default Postgres port.
+      - "5432:5432"
     env_file:
       - ./config/db.env
-    # This allows to start the justchess service only when mysql is ready
+    # This allows to start the justchess service only when db is ready
     # to accepts new connections.  Otherwise justchess will crush after
     # first unsuccessfull connection try.
     healthcheck:
-      test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
-      retries: 10
+      test: pg_isready -d justchess -U admin
+      retries: 2
+      interval: 2s
       timeout: 2s
     volumes:
-      - ./config/db.conf:/etc/mysql/conf.d/my.cnf:ro
+      - ./config/db.conf:/etc/postgresql/postgresql.conf:ro
       # Make db data persistent.
-      - db_data:/var/lib/mysql
+      - db_data:/var/lib/postgresql
     logging:
       options:
         max-size: "10m"
