@@ -1,0 +1,7 @@
+DROP TABLE IF EXISTS session;
+
+ALTER TABLE player DROP COLUMN is_guest;
+
+ALTER TABLE rated_game ALTER COLUMN white_id DROP NOT NULL;
+ALTER TABLE rated_game ALTER COLUMN black_id DROP NOT NULL;
+ALTER TABLE engine_game ALTER COLUMN player_id DROP NOT NULL;
