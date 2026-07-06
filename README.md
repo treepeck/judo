@@ -36,7 +36,7 @@ See `docker-compose.yaml` for details about the network ports used by these serv
 the `config` folder:
 
 - `db.env` - defines the Postgres user credentials and database name.
-- `db.conf` - enables the Postgres event scheduler to clean up expired sessions.
+- `db.conf` - sets the Postgres time zone to UTC.
 - `justchess.env` - defines the URL for connecting to the database.
 
 ## Run services
