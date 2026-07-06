@@ -1,8 +1,6 @@
 services:
   db:
-    build:
-      context: .
-      dockerfile: ./docker/db.Dockerfile
+    image: postgres:18.4-alpine3.24
     container_name: db
     ports:
       # Default Postgres port.
@@ -18,7 +16,7 @@ services:
       interval: 2s
       timeout: 2s
     volumes:
-      - ./config/db.conf:/etc/postgresql/postgresql.conf:ro
+      - ./config/db.conf:/var/lib/postgresql/data/postgresql.conf:ro
       # Make db data persistent.
       - db_data:/var/lib/postgresql
     logging:

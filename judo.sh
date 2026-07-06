@@ -47,7 +47,7 @@ remove() {
 	echo "Removing images..."
     docker rmi judo-justchess
 	docker rmi axllent/mailpit
-    docker rmi postgres:18.4
+	docker rmi judo-db
 
     echo "Removing database volume..."
     docker volume rm judo_db_data
@@ -124,10 +124,10 @@ migration() {
 			docker exec justchess chown -R "$(id -u)":"$(id -g)" /app/migrations
 			;;
 		up)
-			docker exec justchess sh -c 'migrate -database "postgres://${DB_DSN}" -path /app/migrations up'
+			docker exec justchess sh -c 'migrate -database "${DB_DSN}" -path /app/migrations up'
 			;;
 		down)
-			docker exec justchess sh -c 'migrate -database "postgres://${DB_DSN}" -path /app/migrations down 1'
+			docker exec justchess sh -c 'migrate -database "${DB_DSN}" -path /app/migrations down 1'
 			;;
 		*) echo "$optionHelp" ;;
 	esac

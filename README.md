@@ -23,7 +23,7 @@ will download the source code from GitHub repos.
 
 The JustChess project consists of the following services:
 
-- `db` - MySQL database that stores player's credentials, active sessions and<br/>
+- `db` - Postgres database that stores player's credentials, active sessions and<br/>
   completed games.
 - `justchess` - HTTP and WebSocket server, written in Go.
 - `mailpit` - Email testing tool.
@@ -35,8 +35,8 @@ See `docker-compose.yaml` for details about the network ports used by these serv
 `docker-compose.yaml` expects the following configuration files to be located in<br/>
 the `config` folder:
 
-- `db.env` - defines the MySQL user credentials and database name.
-- `db.conf` - enables the MySQL event scheduler to clean up expired sessions.
+- `db.env` - defines the Postgres user credentials and database name.
+- `db.conf` - enables the Postgres event scheduler to clean up expired sessions.
 - `justchess.env` - defines the URL for connecting to the database.
 
 ## Run services
