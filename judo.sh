@@ -47,7 +47,7 @@ remove() {
 	echo "Removing images..."
     docker rmi judo-justchess
 	docker rmi axllent/mailpit
-	docker rmi judo-db
+	docker rmi postgres:18.4-alpine3.24
 
     echo "Removing database volume..."
     docker volume rm judo_db_data
