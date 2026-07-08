@@ -1,6 +1,6 @@
 FROM golang:1.26.4-alpine
 
-RUN apk add --no-cache gcc musl-dev
+RUN apk add --no-cache gcc musl-dev bash
 
 WORKDIR /app/src
 
@@ -10,6 +10,3 @@ RUN go mod download
 
 # Install migration tool.
 RUN go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
-
-# Run database migrations.
-# RUN migrate -database "postgres://${DB_DSN}" -path /app/migrations up

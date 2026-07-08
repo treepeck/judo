@@ -41,12 +41,13 @@ services:
       - ./repo/justchess:/app/src
       # Mount migrations from host OS.
       - ./db/migrations:/app/migrations
+      - ./entrypoint.sh:/app/entrypoint.sh
     logging:
       options:
         max-size: "10m"
         max-file: "3"
     stop_grace_period: 1s
-    entrypoint: go run -race cmd/justchess/main.go
+    entrypoint: /app/entrypoint.sh
 
   mailpit:
     image: axllent/mailpit
