@@ -16,7 +16,7 @@ git clone https://github.com/treepeck/judo
 cd judo
 ```
 
-Finally, execute `./judo.sh download` (works via WSL on Windows) script that<br/>
+Finally, execute `./judo.sh download` (works via WSL on Windows) script that
 will download the source code from GitHub repos.
 
 ## Services
@@ -32,8 +32,7 @@ See `docker-compose.yaml` for details about the network ports used by these serv
 
 ## Configuration files
 
-`docker-compose.yaml` expects the following configuration files to be located in<br/>
-the `config` folder:
+`docker-compose.yaml` expects the following configuration files to be located in the `config` folder:
 
 - `db.env` - defines the Postgres user credentials and database name.
 - `db.conf` - sets the Postgres time zone to UTC.
@@ -47,12 +46,12 @@ To run all services, execute this command in the `judo` folder:
 ./judo.sh start
 ```
 
-You might need to prefix this command with sudo if you haven’t configured<br/>
-the system permissions for the Docker engine.
+You might need to prefix this command with sudo if you haven’t configured the system
+permissions for the Docker engine.
 
 ## Display changes
 
-Changes to Go files and templates requires rebuilding `justchess` service, while<br/>
+Changes to Go files and templates requires rebuilding `justchess` service, while
 changes to scripts and css are displayed automatically.
 
 To restart the service, execute this command:
@@ -63,10 +62,8 @@ To restart the service, execute this command:
 
 ## Migrations
 
-`justchess` container includes the `golang-migrate` CLI tool to perform <br/>
-migration-based schema updates.  Once the `justchess` service is started<br/>
-run `./judo.sh migration up` to apply all `*.up.sql` migrations files<br/>
-under the `migrations` folder.
+`justchess` container includes the `golang-migrate` CLI tool to perform migration-based schema updates.
+Migrations are automatically applied on each `justchess` rebuild.
 
 For more details see [judo.sh](./judo.sh).
 
