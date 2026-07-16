@@ -27,6 +27,7 @@ The JustChess project consists of the following services:
   completed games.
 - `justchess` - HTTP and WebSocket server, written in Go.
 - `mailpit` - Email testing tool.
+- `pgadmin` - PgAdmin4 for convenient DB management.
 
 See `docker-compose.yaml` for details about the network ports used by these services.
 
