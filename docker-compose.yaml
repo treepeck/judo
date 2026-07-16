@@ -55,5 +55,22 @@ services:
     ports:
       - "8025:8025"
 
+  pgadmin:
+    image: dpage/pgadmin4:9.16
+    container_name: pgadmin
+    env_file:
+      - ./config/pgadmin.env
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "5050:80"
+    volumes:
+      # Mount configuration so that pgadmin automatically connects to DB.
+      - ./config/pgadmin.json:/pgadmin4/servers.json
+      - ./config/pgpass:/config/pgpass
+    user: root
+    entrypoint: /bin/sh -c "chmod 600 /config/pgpass; /entrypoint.sh;"
+
 volumes:
   db_data:

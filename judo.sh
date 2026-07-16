@@ -26,7 +26,7 @@ optionHelp="Available options:
 # start runs the local development services.
 start() {
     echo "Starting services..."
-	docker compose up -d db justchess mailpit
+	docker compose up -d db justchess mailpit pgadmin
     echo "Services started successfully"
 }
 
@@ -43,11 +43,13 @@ remove() {
     docker rm -fv justchess
     docker rm db
 	docker rm mailpit
+	docker rm -fv pgadmin
 
 	echo "Removing images..."
     docker rmi judo-justchess
 	docker rmi axllent/mailpit
 	docker rmi postgres:18.4-alpine3.24
+	docker rmi dpage/pgadmin4:9.16
 
     echo "Removing database volume..."
     docker volume rm judo_db_data
