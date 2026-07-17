@@ -1,0 +1,10 @@
+ALTER TABLE game ALTER COLUMN time_control TYPE SMALLINT;
+ALTER TABLE game ALTER COLUMN time_control DROP DEFAULT;
+ALTER TABLE game ALTER COLUMN time_control DROP NOT NULL;
+
+ALTER TABLE game ALTER COLUMN time_bonus TYPE SMALLINT;
+ALTER TABLE game ALTER COLUMN time_bonus DROP DEFAULT;
+ALTER TABLE game ALTER COLUMN time_bonus DROP NOT NULL;
+
+UPDATE game SET time_control = NULL, time_bonus = NULL
+WHERE time_control = 0 AND time_bonus = 0;
