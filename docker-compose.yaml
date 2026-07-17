@@ -70,7 +70,7 @@ services:
       - ./config/pgadmin.json:/pgadmin4/servers.json
       - ./config/pgpass:/config/pgpass
     user: root
-    entrypoint: /bin/sh -c "chmod 600 /config/pgpass; /entrypoint.sh;"
+    entrypoint: /bin/sh -c "chown 5050:5050 /config/pgpass; chmod 600 /config/pgpass; /entrypoint.sh;"
 
 volumes:
   db_data:
