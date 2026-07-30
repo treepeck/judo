@@ -20,7 +20,9 @@ serviceHelp="Available services:
 optionHelp="Available options:
 	create                           Create a new SQL migration file
 	up                               Apply all up migrations
-	down                             Applies the last down migration"
+	down                             Applies the last down migration
+	lint                             Runs ESLint for JS scripts
+	format                           Formats .js and .css files using Prettier"
 
 
 # start runs the local development services.
@@ -44,12 +46,14 @@ remove() {
     docker rm db
 	docker rm mailpit
 	docker rm -fv pgadmin
+	docker rm -fv node
 
 	echo "Removing images..."
     docker rmi judo-justchess
 	docker rmi axllent/mailpit
 	docker rmi postgres:18.4-alpine3.24
 	docker rmi dpage/pgadmin4:9.16
+	docker rmi judo-node
 
     echo "Removing database volume..."
     docker volume rm judo_db_data
@@ -146,6 +150,18 @@ seed() {
 	echo "Database seeded successfully"
 }
 
+lint() {
+	echo "Linting code..."
+	docker compose run --rm node npm run lint
+	echo "Code linted successfully"
+}
+
+format() {
+	echo "Formatting code..."
+	docker compose run --rm node npm run format
+	echo "Code formatted successfully"
+}
+
 # Parse arguments.
 action="${1:-}"
 service="${2:-}"
@@ -163,5 +179,7 @@ case "$action" in
 	migration)
 		migration "$option" "$filename" ;;
 	seed) seed ;;
+	lint) lint ;;
+	format) format ;;
     *) echo "$actionHelp" ;;
 esac

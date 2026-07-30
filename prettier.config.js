@@ -1,0 +1,20 @@
+export default {
+  semi: false,
+
+  overrides: [
+    {
+      files: "*.js",
+      options: {
+        useTabs: true,
+        tabWidth: 4
+      }
+    },
+    {
+      files: "*.css",
+      options: {
+        useTabs: false,
+        tabWidth: 2
+      }
+    }
+  ]
+}

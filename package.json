@@ -1,0 +1,14 @@
+{
+  "type": "module",
+  "devDependencies": {
+    "eslint": "10.8.0",
+    "@eslint/js": "10.0.1",
+    "prettier": "3.9.6",
+    "globals": "17.8.0",
+    "eslint-config-prettier": "10.1.8"
+  },
+  "scripts": {
+    "lint": "eslint scripts",
+    "format": "prettier --write scripts styles"
+  }
+}

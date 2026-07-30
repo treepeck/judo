@@ -72,5 +72,15 @@ services:
     user: root
     entrypoint: /bin/sh -c "chown 5050:5050 /config/pgpass; chmod 600 /config/pgpass; /entrypoint.sh;"
 
+  node:
+    build:
+      context: .
+      dockerfile: ./docker/node.Dockerfile
+    container_name: node
+    volumes:
+      # Mount frontend code for linting and formatting.
+      - ./repo/justchess/_web/assets/scripts:/app/scripts
+      - ./repo/justchess/_web/assets/styles:/app/styles
+
 volumes:
   db_data:
