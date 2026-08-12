@@ -157,8 +157,12 @@ lint() {
 }
 
 format() {
-	echo "Formatting code..."
+	echo "Formatting frontend code..."
 	docker compose run --rm node npm run format
+
+	echo "Formatting backend code..."
+	docker compose exec -it justchess gofmt -w .
+
 	echo "Code formatted successfully"
 }
 
