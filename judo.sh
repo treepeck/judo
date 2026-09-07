@@ -14,21 +14,22 @@ Available actions:
     migration <option>  <filename>   Manage db migrations
     seed                             Insert mock data into db for testing purposes"
 serviceHelp="Available services:
-    justchess                        HTTP and WebSocker server
-	db                               Primary MySQL database
-	testdb                           Disposable MySQL database to run tests"
+    justchess                        Core HTTP server
+    coordinator                      WebSocket server
+    db                               Primary PostgreSQL database
+	testdb                           Disposable PostgreSQL database to run tests"
 optionHelp="Available options:
 	create                           Create a new SQL migration file
 	up                               Apply all up migrations
 	down                             Applies the last down migration
 	lint                             Runs ESLint for JS scripts
-	format                           Formats .js and .css files using Prettier"
+	format                           Formats source code. JS and CSS files are formatted using Prettier. GO files are formatted using gofmt."
 
 
 # start runs the local development services.
 start() {
     echo "Starting services..."
-	docker compose up -d db justchess mailpit pgadmin
+	docker compose up -d db justchess coordinator mailpit pgadmin
     echo "Services started successfully"
 }
 
@@ -47,6 +48,7 @@ remove() {
 	docker rm mailpit
 	docker rm -fv pgadmin
 	docker rm -fv node
+	docker rm -fv coordinator
 
 	echo "Removing images..."
     docker rmi judo-justchess
@@ -54,6 +56,7 @@ remove() {
 	docker rmi postgres:18.4-alpine3.24
 	docker rmi dpage/pgadmin4:9.16
 	docker rmi judo-node
+	docker rmi judo-coordinator
 
     echo "Removing database volume..."
     docker volume rm judo_db_data
@@ -80,6 +83,7 @@ download() {
 
     REPOS=(
         "https://github.com/treepeck/justchess justchess"
+        "https://github.com/treepeck/coordinator coordinator"
 		"https://github.com/treepeck/chego chego"
     )
 
@@ -101,7 +105,7 @@ download() {
             )
         else
             mkdir $repopath
-			if [[ "${split[1]}" == "justchess" ]]; then
+			if [[ "${split[1]}" == "justchess" || "${split[1]}" == "coordinator" ]]; then
 				git clone -b dev ${split[0]} $repopath
 			else
 				git clone ${split[0]} $repopath
@@ -162,6 +166,7 @@ format() {
 
 	echo "Formatting backend code..."
 	docker compose exec -it justchess gofmt -w .
+	docker compose exec -it coordinator gofmt -w .
 
 	echo "Code formatted successfully"
 }

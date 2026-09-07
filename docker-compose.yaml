@@ -30,6 +30,7 @@ services:
       dockerfile: ./docker/justchess.Dockerfile
     container_name: justchess
     env_file:
+      - ./config/common.env
       - ./config/justchess.env
     depends_on:
       db:
@@ -48,6 +49,29 @@ services:
         max-file: "3"
     stop_grace_period: 1s
     entrypoint: /app/entrypoint.sh
+
+  coordinator:
+    build:
+      context: .
+      dockerfile: ./docker/coordinator.Dockerfile
+    container_name: coordinator
+    env_file:
+      - ./config/common.env
+    depends_on:
+      db:
+        condition: service_healthy
+      justchess:
+        condition: service_healthy
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./repo/coordinator:/app/src
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+    stop_grace_period: 1s
+    entrypoint: go run -race cmd/coordinator/main.go
 
   mailpit:
     image: axllent/mailpit
