@@ -25,7 +25,8 @@ The JustChess project consists of the following services:
 
 - `db` - Postgres database that stores player's credentials, active sessions and<br/>
   completed games.
-- `justchess` - HTTP and WebSocket server, written in Go.
+- `justchess` - HTTP and TCP server, written in Go.
+- `coordinator` - WebSocket server, written in Go.
 - `mailpit` - Email testing tool.
 - `pgadmin` - PgAdmin4 for convenient DB management.
 - `node` - Node.js image with Eslint and Stylelint for JS code linting and formatting.
@@ -38,8 +39,9 @@ See `docker-compose.yaml` for details about the network ports used by these serv
 
 - `db.env` - defines the Postgres user credentials and database name.
 - `db.conf` - sets the Postgres time zone to UTC.
-- `justchess.env` - defines the URL for connecting to the database.
-- `pgadmin.env` - defines the Postgres credentials for PgAdmin.
+- `common.env` - defines variables used by both `justchess` and `coordinator` services.
+- `justchess.env` - defines variables specific for `justchess` service.
+- `pgadmin.evn` - defines the Postgres credentials for PgAdmin.
 
 ## Run services
 
