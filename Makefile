@@ -19,3 +19,9 @@ coordinator-dlv:
 
 coordinator-gdlv:
 	gdlv connect localhost:50000
+
+justchess-strace:
+	cd repo/justchess && strace go run cmd/justchess/main.go
+
+coordinator-strace:
+	cd repo/coordinator && strace go run cmd/coordinator/main.go
