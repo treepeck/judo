@@ -1,4 +1,8 @@
-[![YouTube](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/watch?v=yRRJ4SBcM_g)
+# DEPRECATED - JustChess becomes closed source.
+
+### Future updates will not be published. The development itself will remain public and broadcasted on [YouTube](https://www.youtube.com/@treepeck).
+
+---
 
 Judo [JustChess-Docker] is a local development environment for [justchess.org](https://justchess.org)
 
